@@ -31,4 +31,6 @@ public class CaracteristicaService {
     public void eliminar(Long id) {
         caracteristicaRepository.deleteById(id);
     }
+
+
 }

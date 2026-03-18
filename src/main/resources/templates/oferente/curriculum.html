@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oferente - Mi CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+<nav class="bg-black text-gray-300">
+    <input type="checkbox" id="menuToggle" class="hidden peer/menu">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-14">
+            <a href="/" class="flex items-center gap-2 font-semibold hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                BolsaEmpleo
+            </a>
+            <div class="hidden md:flex gap-6 text-sm">
+                <a href="/oferente/dashboard" class="hover:text-white">Dashboard</a>
+                <a href="/oferente/habilidades" class="hover:text-white">Mis habilidades</a>
+                <a href="/oferente/curriculum" class="hover:text-white">Mi CV</a>
+            </div>
+            <div class="hidden md:flex items-center gap-3">
+                <span class="text-sm" th:text="${oferente.correo}"></span>
+                <a href="/logout" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded">Salir</a>
+            </div>
+            <label for="menuToggle" class="md:hidden cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </label>
+        </div>
+    </div>
+    <div class="hidden peer-checked/menu:block md:!hidden">
+        <div class="flex flex-col px-4 py-3 gap-3 text-sm">
+            <a href="/oferente/dashboard" class="hover:text-blue-400">Dashboard</a>
+            <a href="/oferente/habilidades" class="hover:text-blue-400">Mis habilidades</a>
+            <a href="/oferente/curriculum" class="hover:text-blue-400">Mi CV</a>
+            <a href="/logout" class="hover:text-blue-400">Salir</a>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Mi CV</h1>
+
+    <!-- ERROR -->
+    <div th:if="${error}"
+         class="bg-red-100 text-red-700 text-sm rounded p-3 mb-4"
+         th:text="${error}">
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- SUBIR CV -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="font-semibold text-gray-800 mb-4">
+                <span th:if="${curriculum == null}">Subir CV</span>
+                <span th:if="${curriculum != null}">Actualizar CV</span>
+            </h2>
+
+            <form method="post" action="/oferente/curriculum/subir" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label class="block text-sm text-gray-600 mb-1">Archivo PDF</label>
+                    <input type="file" name="archivo" accept=".pdf" required
+                           class="w-full text-sm text-gray-600 border rounded px-3 py-2
+                                  file:mr-3 file:py-1 file:px-3 file:rounded
+                                  file:border-0 file:text-sm file:font-semibold
+                                  file:bg-blue-50 file:text-blue-600
+                                  hover:file:bg-blue-100">
+                </div>
+                <button type="submit"
+                        class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm font-semibold">
+                    <span th:if="${curriculum == null}">Subir</span>
+                    <span th:if="${curriculum != null}">Reemplazar</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- CV ACTUAL -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="font-semibold text-gray-800 mb-4">CV actual</h2>
+
+            <div th:if="${curriculum == null}" class="text-gray-400 text-sm">
+                No has subido ningún CV todavía.
+            </div>
+
+            <div th:if="${curriculum != null}" class="flex flex-col gap-3">
+                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded border">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    <span class="text-sm text-gray-700" th:text="${curriculum.archivo}"></span>
+                </div>
+
+                <a href="/oferente/curriculum/ver"
+                   target="_blank"
+                   class="w-full text-center bg-green-500 text-white py-2 rounded hover:bg-green-600 text-sm font-semibold">
+                    Ver PDF
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<footer class="bg-gray-900 text-gray-300 text-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
+        <span>Bolsa de Empleo</span>
+        <span>Contacto info@bolsaempleo.local</span>
+    </div>
+</footer>
+
+</body>
+</html>

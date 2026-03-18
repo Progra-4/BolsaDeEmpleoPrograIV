@@ -8,5 +8,5 @@ import java.util.List;
 public interface OferenteCaracteristicaRepository extends JpaRepository<OferenteCaracteristica, Long> {
 
     List<OferenteCaracteristica> findByOferente(Oferente oferente);
-
+    List<OferenteCaracteristica> findByOferenteId(Long oferenteId);
 }
