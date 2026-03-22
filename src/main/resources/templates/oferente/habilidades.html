@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oferente - Habilidades</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+<nav class="bg-black text-gray-300">
+    <input type="checkbox" id="menuToggle" class="hidden peer/menu">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-14">
+            <a href="/" class="flex items-center gap-2 font-semibold hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                BolsaEmpleo
+            </a>
+            <div class="hidden md:flex gap-6 text-sm">
+                <a href="/oferente/dashboard" class="hover:text-white">Dashboard</a>
+                <a href="/oferente/habilidades" class="hover:text-white">Mis habilidades</a>
+                <a href="/oferente/curriculum" class="hover:text-white">Mi CV</a>
+            </div>
+            <div class="hidden md:flex items-center gap-3">
+                <span class="text-sm" th:text="${oferente.correo}"></span>
+                <a href="/logout" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded">Salir</a>
+            </div>
+            <label for="menuToggle" class="md:hidden cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </label>
+        </div>
+    </div>
+    <div class="hidden peer-checked/menu:block md:!hidden">
+        <div class="flex flex-col px-4 py-3 gap-3 text-sm">
+            <a href="/oferente/dashboard" class="hover:text-blue-400">Dashboard</a>
+            <a href="/oferente/habilidades" class="hover:text-blue-400">Mis habilidades</a>
+            <a href="/oferente/curriculum" class="hover:text-blue-400">Mi CV</a>
+            <a href="/logout" class="hover:text-blue-400">Salir</a>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Mis habilidades</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- TABLA DE HABILIDADES ACTUALES -->
+        <div class="bg-white rounded-lg shadow p-5">
+            <table class="w-full text-sm">
+                <thead>
+                <tr class="text-left border-b">
+                    <th class="pb-2 text-gray-600">Característica</th>
+                    <th class="pb-2 text-gray-600">Nivel</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="h : ${habilidades}" class="border-b last:border-0">
+                    <td class="py-2 text-gray-800" th:text="${h.caracteristica.nombre}"></td>
+                    <td class="py-2 text-gray-800" th:text="${h.nivel}"></td>
+                </tr>
+                <tr th:if="${habilidades.isEmpty()}">
+                    <td colspan="2" class="py-4 text-gray-400 text-center">Sin habilidades registradas</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- NAVEGACION JERARQUICA -->
+        <div class="bg-white rounded-lg shadow p-5">
+
+            <!-- RUTA -->
+            <div class="flex items-center gap-1 flex-wrap text-sm mb-3">
+                <a href="/oferente/habilidades"
+                   class="bg-gray-200 hover:bg-gray-300 px-2 py-0.5 rounded text-gray-700">
+                    Raíces
+                </a>
+                <span th:each="nodo, iter : ${ruta}">
+                    <span class="text-gray-400">/</span>
+                    <a th:href="@{/oferente/habilidades(actualId=${nodo.id})}"
+                       class="bg-gray-200 hover:bg-gray-300 px-2 py-0.5 rounded text-gray-700"
+                       th:text="${nodo.nombre}"></a>
+                </span>
+            </div>
+
+            <!-- SUBCATEGORIAS -->
+            <div th:if="${actual != null}" class="text-sm text-gray-500 mb-2">
+                Subcategorías de: <span class="font-semibold text-gray-700" th:text="${actual.nombre}"></span>
+            </div>
+
+            <div th:each="sub : ${subcategorias}"
+                 class="flex items-center justify-between py-1.5 border-b last:border-0">
+                <a th:href="@{/oferente/habilidades(actualId=${sub.id})}"
+                   class="text-sm text-gray-700 hover:text-blue-500"
+                   th:text="${sub.nombre}"></a>
+                <a th:href="@{/oferente/habilidades(actualId=${sub.id})}"
+                   class="text-xs text-blue-400 hover:text-blue-600">
+                    Entrar
+                </a>
+            </div>
+
+            <div th:if="${subcategorias.isEmpty()}" class="text-sm text-gray-400 mt-2">
+                Sin subcategorías
+            </div>
+        </div>
+
+        <!-- FORMULARIO AGREGAR HABILIDAD -->
+        <div class="bg-white rounded-lg shadow p-5">
+            <h2 class="font-semibold text-gray-800 mb-4">Agregar Habilidad</h2>
+
+            <form method="post" action="/oferente/habilidades/agregar">
+
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-600 mb-1">Característica</label>
+                    <select name="caracteristicaId"
+                            class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option th:each="c : ${todasCaracteristicas}"
+                                th:value="${c.id}"
+                                th:text="${c.nombre}"
+                                th:selected="${actual != null and actual.id == c.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm text-gray-600 mb-1">Nivel (1-5)</label>
+                    <input type="number" name="nivel" min="1" max="5" value="1"
+                           class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm font-semibold">
+                    Agregar
+                </button>
+
+            </form>
+        </div>
+
+    </div>
+
+</main>
+
+<footer class="bg-gray-900 text-gray-300 text-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
+        <span>Bolsa de Empleo</span>
+        <span>Contacto info@bolsaempleo.local</span>
+    </div>
+</footer>
+
+</body>
+</html>
