@@ -32,6 +32,16 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
+        <div th:if="${param.exito}"
+             class="bg-green-100 text-green-700 text-sm rounded p-3 mb-4">
+            Habilidad agregada correctamente.
+        </div>
+
+        <div th:if="${param.error}"
+             class="bg-red-100 text-red-700 text-sm rounded p-3 mb-4">
+            Esta habilidad ya está registrada.
+        </div>
+
         <!-- TABLA DE HABILIDADES ACTUALES -->
         <div class="bg-white rounded-lg shadow p-5">
             <table class="w-full text-sm">
@@ -95,17 +105,34 @@
         <div class="bg-white rounded-lg shadow p-5">
             <h2 class="font-semibold text-gray-800 mb-4">Agregar Habilidad</h2>
 
-            <form method="post" action="/oferentes/guardar">
+            <form method="post" action="/oferente/habilidades/agregar">
 
                 <div class="mb-3">
                     <label class="block text-sm text-gray-600 mb-1">Característica</label>
                     <select name="caracteristicaId"
                             class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        <option th:each="c : ${todasCaracteristicas}"
-                                th:value="${c.id}"
-                                th:text="${c.nombre}"
-                                th:selected="${actual != null and actual.id == c.id}">
-                        </option>
+
+                        <!-- Mostrar las subcategorías del nivel actual -->
+                        <th:block th:if="${not subcategorias.isEmpty()}">
+                            <option th:each="c : ${subcategorias}"
+                                    th:value="${c.id}"
+                                    th:text="${c.nombre}">
+                            </option>
+                        </th:block>
+
+                        <!-- Si no hay subcategorías, mostrar la característica actual -->
+                        <th:block th:if="${subcategorias.isEmpty() and actual != null}">
+                            <option th:value="${actual.id}"
+                                    th:text="${actual.nombre}"
+                                    selected>
+                            </option>
+                        </th:block>
+
+                        <!-- Si estamos en raíces sin selección -->
+                        <th:block th:if="${actual == null}">
+                            <option value="" disabled selected>Navegá la jerarquía para seleccionar</option>
+                        </th:block>
+
                     </select>
                 </div>
 
