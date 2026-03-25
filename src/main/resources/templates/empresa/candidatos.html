@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidatos - Empresa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex flex-col">
+        <!-- Navbar -->
+        <nav class="bg-blue-600 text-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="/empresa/dashboard" class="flex items-center space-x-2 hover:opacity-80 transition">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                        </svg>
+                        <h1 class="text-xl font-bold">Bolsa de Empleo</h1>
+                    </a>
+                </div>
+                <div class="text-right">
+                    <p class="font-semibold" th:text="${empresa.nombre}">Empresa</p>
+                    <a href="/logout" class="text-sm hover:underline">Cerrar sesión</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <a href="/empresa/puestos" class="text-blue-600 hover:text-blue-800 flex items-center space-x-1 mb-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Volver a Puestos</span>
+                    </a>
+                    <h2 class="text-3xl font-bold text-gray-800">Candidatos</h2>
+                    <p class="text-gray-600 mt-1" th:text="'Puesto: ' + ${puesto.titulo}">Puesto</p>
+                </div>
+            </div>
+
+            <!-- Requisitos del Puesto -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8" th:if="${puesto.requisitos != null and !#lists.isEmpty(puesto.requisitos)}">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Requisitos del Puesto</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div th:each="req : ${puesto.requisitos}" class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                        <p class="font-semibold text-gray-800" th:text="${req.caracteristica.nombre}">Característica</p>
+                        <p class="text-sm text-gray-600">
+                            Nivel requerido:
+                            <span class="font-bold text-blue-600" th:text="${req.nivel}">0</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidatos List -->
+            <div th:if="${not #lists.isEmpty(candidatos)}" class="space-y-4">
+                <p class="text-gray-600 font-semibold">
+                    <span th:text="${#lists.size(candidatos)}">0</span> candidato(s) que cumplen con los requisitos
+                </p>
+
+                <div th:each="candidato : ${candidatos}" class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <!-- Información del Candidato -->
+                            <div class="flex items-center space-x-4 mb-4">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-gray-800">
+                                        <span th:text="${candidato.nombre + ' ' + candidato.apellido}">Nombre Apellido</span>
+                                    </h3>
+                                    <p class="text-gray-600 text-sm" th:text="${candidato.correo}">correo@example.com</p>
+                                </div>
+                            </div>
+
+                            <!-- Información de contacto -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="flex items-center space-x-2 text-gray-700">
+                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.79l.291 1.463a1 1 0 00.963.789h6.476c.414 0 .783.238.963-.789l.291-1.463A1 1 0 0114.847 2h2.153a1 1 0 011 1v14a2 2 0 01-2 2H4a2 2 0 01-2-2V3z"></path>
+                                    </svg>
+                                    <span th:text="${candidato.telefono}">+1234567890</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-700">
+                                    <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span th:text="${candidato.residencia}">País</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-700">
+                                    <svg class="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h12a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm0-1a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2H3z"></path>
+                                    </svg>
+                                    <span th:text="${candidato.identificacion}">ID</span>
+                                </div>
+                            </div>
+
+                            <!-- Habilidades del Candidato -->
+                            <div th:if="${candidato.habilidades != null and !#lists.isEmpty(candidato.habilidades)}">
+                                <p class="text-sm font-semibold text-gray-700 mb-2">Habilidades:</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <div th:each="hab : ${candidato.habilidades}" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        <span th:text="${hab.caracteristica.nombre}">Habilidad</span>
+                                        <span class="text-green-600 ml-1 font-bold">Nivel <span th:text="${hab.nivel}">0</span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Match Percentage -->
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-semibold text-gray-700">Compatibilidad:</span>
+                                    <span class="text-lg font-bold text-blue-600" th:text="${matchingService.calcularPorcentajeMatch(candidato, puesto) + '%'}">100%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full"
+                                         th:style="'width: ' + ${matchingService.calcularPorcentajeMatch(candidato, puesto)} + '%'"
+                                         ></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="ml-6 flex flex-col space-y-2">
+                            <a th:href="'/empresa/candidatos/' + ${candidato.id}"
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors text-center flex items-center justify-center space-x-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Ver Perfil</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div th:unless="${not #lists.isEmpty(candidatos)}" class="bg-white rounded-lg shadow-md p-12 text-center">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">No hay candidatos</h3>
+                <p class="text-gray-600">Aún no hay oferentes que cumplan con los requisitos de este puesto</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
