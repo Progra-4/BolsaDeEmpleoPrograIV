@@ -34,6 +34,20 @@ public class Puesto {
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
-    @OneToMany(mappedBy = "puesto", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "puesto", fetch = FetchType.LAZY)
     private List<PuestoCaracteristica> requisitos;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.tipoPublicacion == null) {
+            this.tipoPublicacion = "PUBLICO";
+        }
+        if (!this.activo) {
+            this.activo = true;
+        }
+        if (this.fecha == null) {
+            this.fecha = LocalDateTime.now();
+        }
+    }
 }
+
