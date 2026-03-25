@@ -9,5 +9,8 @@ public interface OferenteRepository extends JpaRepository<Oferente, Long> {
     Oferente findByCorreo(String correo);
 
     List<Oferente> findByAprobado(boolean aprobado);
+    List<Oferente> findByAprobadoFalse();
 
+    long countByAprobadoFalse();
+    long count();
 }
