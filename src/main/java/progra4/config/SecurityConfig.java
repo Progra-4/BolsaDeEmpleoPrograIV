@@ -21,9 +21,13 @@ public class SecurityConfig {
                                 "/puestos/buscar-por-caracteristicas",
                                 "/oferentes/**",
                                 "/css/**", "/static/**", "/uploads/**").permitAll()
+
+                        .requestMatchers("/oferente/curriculum/descargar/**").authenticated()
+
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/empresa/**").hasAuthority("EMPRESA")
                         .requestMatchers("/oferente/**").hasAuthority("OFERENTE")
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -53,21 +57,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // sin hash por ahora, las claves están en texto plano
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/oferente/curriculum/descargar/**").authenticated()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login") // si tienes login personalizado
-                        .permitAll()
-                );
-
-        return http.build();
+        return NoOpPasswordEncoder.getInstance();
     }
 }
