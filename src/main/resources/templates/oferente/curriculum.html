@@ -5,85 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oferente - Mi CV</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#16a34a'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100 font-sans min-h-screen flex flex-col">
 
 <nav class="bg-blue-600 text-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-14">
-            <a href="/oferente/dashboard" class="flex items-center gap-2 font-semibold hover:text-white">
-                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                </svg>
-                BolsaEmpleo
-            </a>
-            <div class="md:flex items-center gap-3">
-                <span class="text-sm" th:text="${oferente.correo}"></span>
-                <a href="/logout" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded">Cerrar sesion</a>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <a class="flex items-center gap-2 font-bold text-xl">Bolsa de Empleo</a>
+        <div class="flex items-center gap-4 text-sm">
+            <span th:text="${oferente.correo}"></span>
+            <a href="/logout" class="bg-gray-700 px-4 py-1.5 rounded-lg">Cerrar sesión</a>
         </div>
     </div>
 </nav>
 
-<main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+<main class="flex-grow max-w-7xl mx-auto px-4 py-12">
 
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Mi CV</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Mi CV</h1>
 
-    <!-- ERROR -->
-    <div th:if="${error}"
-         class="bg-red-100 text-red-700 text-sm rounded p-3 mb-4"
-         th:text="${error}">
-    </div>
+    <div th:if="${error}" class="bg-red-100 text-red-700 rounded-lg p-3 mb-6 text-sm" th:text="${error}"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-6">
 
-        <!-- SUBIR CV -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="font-semibold text-gray-800 mb-4">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">
                 <span th:if="${curriculum == null}">Subir CV</span>
                 <span th:if="${curriculum != null}">Actualizar CV</span>
             </h2>
 
             <form method="post" action="/oferente/curriculum/subir" enctype="multipart/form-data">
-                <div class="mb-4">
-                    <label class="block text-sm text-gray-600 mb-1">Archivo PDF</label>
-                    <input type="file" name="archivo" accept=".pdf" required
-                           class="w-full text-sm text-gray-600 border rounded px-3 py-2
-                                  file:mr-3 file:py-1 file:px-3 file:rounded
-                                  file:border-0 file:text-sm file:font-semibold
-                                  file:bg-blue-50 file:text-blue-600
-                                  hover:file:bg-blue-100">
-                </div>
-                <button type="submit"
-                        class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm font-semibold">
+                <input type="file" name="archivo" accept=".pdf" required
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4">
+
+                <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700">
                     <span th:if="${curriculum == null}">Subir</span>
                     <span th:if="${curriculum != null}">Reemplazar</span>
                 </button>
             </form>
         </div>
 
-        <!-- CV ACTUAL -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="font-semibold text-gray-800 mb-4">CV actual</h2>
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">CV actual</h2>
 
-            <div th:if="${curriculum == null}" class="text-gray-400 text-sm">
+            <div th:if="${curriculum == null}" class="text-gray-400">
                 No has subido ningún CV todavía.
             </div>
 
-            <div th:if="${curriculum != null}" class="flex flex-col gap-3">
-                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded border">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
-                    <span class="text-sm text-gray-700" th:text="${curriculum.archivo}"></span>
+            <div th:if="${curriculum != null}" class="space-y-4">
+                <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+                    <span class="text-gray-700 text-sm" th:text="${curriculum.archivo}"></span>
                 </div>
 
                 <a href="/oferente/curriculum/ver"
                    target="_blank"
-                   class="w-full text-center bg-green-500 text-white py-2 rounded hover:bg-green-600 text-sm font-semibold">
+                   class="block text-center bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700">
                     Ver PDF
                 </a>
             </div>
@@ -93,7 +80,7 @@
 
 </main>
 
-<footer class="bg-gray-900 text-gray-300 text-sm">
+<footer class="bg-gray-900 text-gray-300 text-sm mt-auto">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
         <span>Bolsa de Empleo</span>
         <span>Contacto info@bolsaempleo.local</span>

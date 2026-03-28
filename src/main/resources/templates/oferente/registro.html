@@ -7,102 +7,87 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100 font-sans min-h-screen flex flex-col">
 
 <nav class="bg-blue-600 text-white shadow-lg">
-    <input type="checkbox" id="menuToggle" class="hidden peer/menu">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-14">
-            <a href="/" class="flex items-center gap-2 font-semibold hover:text-white">
-                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                </svg>
-                BolsaEmpleo
-            </a>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/" class="flex items-center gap-2 font-bold text-xl hover:opacity-90">
+            BolsaEmpleo
+        </a>
     </div>
 </nav>
 
-<!-- CONTENIDO -->
 <main class="flex-grow flex items-center justify-center py-8 px-4">
-    <div class="bg-white rounded-lg shadow p-8 w-full max-w-lg">
+    <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-lg">
 
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">Registro de Oferente</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Registro de Oferente</h1>
         <p class="text-gray-500 text-sm mb-6">Complete el formulario. Un administrador aprobará su registro.</p>
 
-        <!-- MENSAJE DE EXITO -->
-        <div th:if="${exito}"
-             class="bg-green-100 text-green-700 text-sm rounded p-3 mb-4"
-             th:text="${exito}">
-        </div>
+        <!-- Mensajes -->
+        <div th:if="${exito}" class="bg-green-100 text-green-700 text-sm rounded-lg p-3 mb-4" th:text="${exito}"></div>
+        <div th:if="${error}" class="bg-red-100 text-red-700 text-sm rounded-lg p-3 mb-4" th:text="${error}"></div>
 
-        <!-- MENSAJE DE ERROR -->
-        <div th:if="${error}"
-             class="bg-red-100 text-red-700 text-sm rounded p-3 mb-4"
-             th:text="${error}">
-        </div>
+        <form method="post" action="/oferente/registro" class="space-y-4">
 
-        <form method="post" action="/oferente/registro">
-
-            <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-1">Identificación</label>
+            <div>
+                <label class="block text-sm text-gray-700 mb-1">Identificación</label>
                 <input type="text" name="identificacion" required
-                       class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                        placeholder="Ej: 101110111">
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1">Nombre</label>
+                    <label class="block text-sm text-gray-700 mb-1">Nombre</label>
                     <input type="text" name="nombre" required
-                           class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                            placeholder="Ej: Carlos">
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-600 mb-1">Apellido</label>
+                    <label class="block text-sm text-gray-700 mb-1">Apellido</label>
                     <input type="text" name="apellido" required
-                           class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                            placeholder="Ej: Mora">
                 </div>
             </div>
 
-            <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-1">Nacionalidad</label>
+            <div>
+                <label class="block text-sm text-gray-700 mb-1">Nacionalidad</label>
                 <input type="text" name="nacionalidad"
-                       class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                        placeholder="Ej: Costarricense">
             </div>
 
-            <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-1">Teléfono</label>
+            <div>
+                <label class="block text-sm text-gray-700 mb-1">Teléfono</label>
                 <input type="text" name="telefono"
-                       class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                        placeholder="Ej: 8800-1111">
             </div>
 
-            <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-1">Correo electrónico</label>
+            <div>
+                <label class="block text-sm text-gray-700 mb-1">Correo electrónico</label>
                 <input type="email" name="correo" required
-                       class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                        placeholder="correo@gmail.com">
             </div>
 
-            <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-1">Lugar de residencia</label>
+            <div>
+                <label class="block text-sm text-gray-700 mb-1">Lugar de residencia</label>
                 <input type="text" name="residencia"
-                       class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                        placeholder="Ej: Heredia">
             </div>
 
-            <div class="mb-6">
-                <label class="block text-sm text-gray-600 mb-1">Contraseña</label>
+            <div>
+                <label class="block text-sm text-gray-700 mb-1">Contraseña</label>
                 <input type="password" name="clave" required
-                       class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                        placeholder="Cree una contraseña">
             </div>
 
             <button type="submit"
-                    class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm font-semibold">
+                    class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
                 Registrarse
             </button>
 
@@ -110,8 +95,7 @@
     </div>
 </main>
 
-<!-- FOOTER -->
-<footer class="bg-gray-900 text-gray-300 text-sm">
+<footer class="bg-gray-900 text-gray-300 text-sm mt-auto">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
         <span>Bolsa de Empleo</span>
         <span>Contacto info@bolsaempleo.local</span>

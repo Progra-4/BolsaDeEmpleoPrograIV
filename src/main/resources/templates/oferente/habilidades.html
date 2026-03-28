@@ -3,144 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oferente - Habilidades</title>
+    <title>Habilidades</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100 font-sans min-h-screen flex flex-col">
 
 <nav class="bg-blue-600 text-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-14">
-            <a href="/oferente/dashboard" class="flex items-center gap-2 font-semibold hover:text-white">
-                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                </svg>
-                BolsaEmpleo
-            </a>
-            <div class="md:flex items-center gap-3">
-                <span class="text-sm" th:text="${oferente.correo}"></span>
-                <a href="/logout" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded">Cerrar sesion</a>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <a class="flex items-center gap-2 font-bold text-xl">Bolsa de Empleo</a>
+        <div class="flex items-center gap-4 text-sm">
+            <span th:text="${oferente.correo}"></span>
+            <a href="/logout" class="bg-gray-700 px-4 py-1.5 rounded-lg">Cerrar sesión</a>
         </div>
     </div>
 </nav>
 
-<main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+<main class="flex-grow max-w-7xl mx-auto px-4 py-12">
 
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Mis habilidades</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Mis habilidades</h1>
 
-    <div class="bg-green-100 text-green-700 text-sm rounded p-3 mb-4 "
-         th:if="${param.exito}">
-        Habilidad agregada correctamente.
-    </div>
-    <div class="bg-red-100 text-red-700 text-sm rounded p-3 mb-4"
-         th:if="${param.error}">
-        Esta habilidad ya está registrada.
-    </div>
+    <div class="grid lg:grid-cols-3 gap-6">
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- TABLA DE HABILIDADES ACTUALES -->
-        <div class="bg-white rounded-lg shadow p-5">
+        <div class="bg-white rounded-lg shadow-lg p-6">
             <table class="w-full text-sm">
-                <thead>
-                <tr class="text-left border-b">
-                    <th class="pb-2 text-gray-600">Característica</th>
-                    <th class="pb-2 text-gray-600">Nivel</th>
+                <tr th:each="h : ${habilidades}">
+                    <td th:text="${h.caracteristica.nombre}"></td>
+                    <td th:text="${h.nivel}"></td>
                 </tr>
-                </thead>
-                <tbody>
-                <tr th:each="h : ${habilidades}" class="border-b last:border-0">
-                    <td class="py-2 text-gray-800" th:text="${h.caracteristica.nombre}"></td>
-                    <td class="py-2 text-gray-800" th:text="${h.nivel}"></td>
-                </tr>
-                <tr th:if="${habilidades.isEmpty()}">
-                    <td colspan="2" class="py-4 text-gray-400 text-center">Sin habilidades registradas</td>
-                </tr>
-                </tbody>
             </table>
         </div>
 
-        <!-- NAVEGACION JERARQUICA -->
-        <div class="bg-white rounded-lg shadow p-5">
-
-            <!-- RUTA -->
-            <div class="flex items-center gap-1 flex-wrap text-sm mb-3">
-                <a href="/oferente/habilidades"
-                   class="bg-gray-200 hover:bg-gray-300 px-2 py-0.5 rounded text-gray-700">
-                    Raíces
-                </a>
-                <span th:each="nodo, iter : ${ruta}">
-                    <span class="text-gray-400">/</span>
-                    <a th:href="@{/oferente/habilidades(actualId=${nodo.id})}"
-                       class="bg-gray-200 hover:bg-gray-300 px-2 py-0.5 rounded text-gray-700"
-                       th:text="${nodo.nombre}"></a>
-                </span>
-            </div>
-
-            <!-- SUBCATEGORIAS -->
-            <div th:if="${actual != null}" class="text-sm text-gray-500 mb-2">
-                Subcategorías de: <span class="font-semibold text-gray-700" th:text="${actual.nombre}"></span>
-            </div>
-
-            <div th:each="sub : ${subcategorias}"
-                 class="flex items-center justify-between py-1.5 border-b last:border-0">
-                <a th:href="@{/oferente/habilidades(actualId=${sub.id})}"
-                   class="text-sm text-gray-700 hover:text-blue-500"
-                   th:text="${sub.nombre}"></a>
-                <a th:href="@{/oferente/habilidades(actualId=${sub.id})}"
-                   class="text-xs text-blue-400 hover:text-blue-600">
-                    Entrar
-                </a>
-            </div>
-
-            <div th:if="${subcategorias.isEmpty()}" class="text-sm text-gray-400 mt-2">
-                Sin subcategorías
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div th:each="sub : ${subcategorias}">
+                <a th:text="${sub.nombre}"></a>
             </div>
         </div>
 
-        <!-- FORMULARIO AGREGAR HABILIDAD -->
-        <div class="bg-white rounded-lg shadow p-5">
-            <h2 class="font-semibold text-gray-800 mb-4">Agregar Habilidad</h2>
-
-            <form method="post" action="/oferente/habilidades/agregar">
-
-                <div class="mb-3">
-                    <label class="block text-sm text-gray-600 mb-1">Característica</label>
-                    <select name="caracteristicaId"
-                            class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
-
-                        <!-- Mostrar las subcategorías del nivel actual -->
-                        <th:block th:if="${not subcategorias.isEmpty()}">
-                            <option th:each="c : ${subcategorias}"
-                                    th:value="${c.id}"
-                                    th:text="${c.nombre}">
-                            </option>
-                        </th:block>
-
-                        <!-- Si no hay subcategorías, mostrar la característica actual -->
-                        <th:block th:if="${subcategorias.isEmpty() and actual != null}">
-                            <option th:value="${actual.id}"
-                                    th:text="${actual.nombre}"
-                                    selected>
-                            </option>
-                        </th:block>
-
-                    </select>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm text-gray-600 mb-1">Nivel (1-5)</label>
-                    <input type="number" name="nivel" min="1" max="5" value="1"
-                           class="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
-                </div>
-
-                <button type="submit"
-                        class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm font-semibold">
-                    Agregar
-                </button>
-
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <form method="post">
+                <select name="caracteristicaId" class="w-full border rounded-lg p-2 mb-3"></select>
+                <input type="number" class="w-full border rounded-lg p-2 mb-3">
+                <button class="w-full bg-blue-600 text-white py-2 rounded-lg">Agregar</button>
             </form>
         </div>
 
@@ -148,7 +52,7 @@
 
 </main>
 
-<footer class="bg-gray-900 text-gray-300 text-sm">
+<footer class="bg-gray-900 text-gray-300 text-sm mt-auto">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
         <span>Bolsa de Empleo</span>
         <span>Contacto info@bolsaempleo.local</span>
