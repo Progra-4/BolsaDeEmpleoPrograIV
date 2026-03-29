@@ -16,9 +16,10 @@
             </svg>
             <span class="text-xl font-bold">BolsaEmpleo</span>
         </a>
-        <div class="text-right">
+        <div class="flex items-center gap-6 text-sm font-semibold">
             <p class="font-semibold" th:text="${empresa.nombre}">Empresa</p>
-            <a href="/logout" class="text-sm hover:underline">Cerrar sesión</a>
+            <span class="text-white/70">|</span>
+            <a href="/logout" class="hover:underline">Salir</a>
         </div>
     </div>
 </nav>
