@@ -3,32 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oferente - Habilidades</title>
+    <title>Habilidades</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100 font-sans min-h-screen flex flex-col">
 
 <nav class="bg-blue-600 text-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-14">
-            <a href="/oferente/dashboard" class="flex items-center gap-2 font-semibold hover:text-white">
-                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                </svg>
-                BolsaEmpleo
-            </a>
-            <div class="md:flex items-center gap-3">
-                <span class="text-sm" th:text="${oferente.correo}"></span>
-                <a href="/logout" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded">Cerrar sesion</a>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/oferente/dashboard" class="flex items-center gap-2 font-bold text-xl">Bolsa de Empleo</a>
+        <div class="flex items-center gap-4 text-sm">
+            <span th:text="${oferente.correo}"></span>
+            <span class="text-white/70">|</span>
+            <a href="/logout" class="hover:underline">Salir</a>
         </div>
     </div>
 </nav>
 
-<main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+<main class="flex-grow max-w-7xl mx-auto px-4 py-12">
 
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Mis habilidades</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Mis habilidades</h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -42,7 +36,6 @@
             Esta habilidad ya está registrada.
         </div>
 
-        <!-- TABLA DE HABILIDADES ACTUALES -->
         <div class="bg-white rounded-lg shadow p-5">
             <table class="w-full text-sm">
                 <thead>
@@ -63,10 +56,8 @@
             </table>
         </div>
 
-        <!-- NAVEGACION JERARQUICA -->
         <div class="bg-white rounded-lg shadow p-5">
 
-            <!-- RUTA -->
             <div class="flex items-center gap-1 flex-wrap text-sm mb-3">
                 <a href="/oferente/habilidades"
                    class="bg-gray-200 hover:bg-gray-300 px-2 py-0.5 rounded text-gray-700">
@@ -80,7 +71,6 @@
                 </span>
             </div>
 
-            <!-- SUBCATEGORIAS -->
             <div th:if="${actual != null}" class="text-sm text-gray-500 mb-2">
                 Subcategorías de: <span class="font-semibold text-gray-700" th:text="${actual.nombre}"></span>
             </div>
@@ -101,7 +91,6 @@
             </div>
         </div>
 
-        <!-- FORMULARIO AGREGAR HABILIDAD -->
         <div class="bg-white rounded-lg shadow p-5">
             <h2 class="font-semibold text-gray-800 mb-4">Agregar Habilidad</h2>
 
@@ -154,7 +143,7 @@
 
 </main>
 
-<footer class="bg-gray-900 text-gray-300 text-sm">
+<footer class="bg-gray-900 text-gray-300 text-sm mt-auto">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
         <span>Bolsa de Empleo</span>
         <span>Contacto info@bolsaempleo.local</span>

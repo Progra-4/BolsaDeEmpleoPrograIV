@@ -8,72 +8,67 @@
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-<nav class="bg-black text-gray-300">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="flex justify-between items-center h-14">
+<nav class="bg-blue-600 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
-      <a href="/" class="flex items-center gap-2 font-semibold hover:text-white">
-        BolsaEmpleo
-      </a>
+    <a href="/admin/dashboard" class="flex items-center gap-2 font-bold text-xl">
+      Bolsa de Empleo
+    </a>
 
-      <div class="hidden md:flex gap-6 text-sm">
-        <a href="/admin/dashboard" class="hover:text-white">Dashboard</a>
-        <a href="/admin/aprobaciones" class="hover:text-white">Aprobaciones</a>
-        <a href="/admin/empresas" class="hover:text-white">Empresas</a>
-        <a href="/admin/oferentes" class="hover:text-white">Oferentes</a>
-        <a href="/admin/caracteristicas" class="hover:text-white">Características</a>
-      </div>
-
-      <div>
-        <a href="/logout" class="text-sm hover:text-white">Salir</a>
-      </div>
-
+    <div class="hidden md:flex items-center gap-6 text-sm font-semibold">
+      <a href="/admin/empresas" class="hover:underline">Empresas</a>
+      <a href="/admin/oferentes" class="hover:underline">Oferentes</a>
+      <a href="/admin/caracteristicas" class="hover:underline">Características</a>
+      <span class="text-white/70">|</span>
+      <a href="/logout" class="hover:underline">Salir</a>
     </div>
+
   </div>
 </nav>
 
-<main class="flex-grow max-w-7xl mx-auto px-4 py-8">
+<main class="flex-grow max-w-7xl mx-auto px-4 py-12">
 
-  <h1 class="text-2xl font-bold mb-6">Aprobaciones</h1>
+  <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">Aprobaciones</h1>
+    <p class="text-gray-500">Gestión de usuarios pendientes</p>
+  </div>
 
   <div class="grid md:grid-cols-2 gap-6">
 
-    <!-- EMPRESAS -->
-    <div class="bg-white p-5 rounded shadow">
-      <h2 class="font-semibold mb-4">Empresas pendientes</h2>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold mb-4 text-gray-800">Empresas pendientes</h2>
 
       <div th:if="${empresas.isEmpty()}" class="text-gray-400 text-sm">
         Sin empresas pendientes
       </div>
 
-      <div th:each="e : ${empresas}" class="border-b py-3 flex justify-between items-center">
+      <div th:each="e : ${empresas}" class="border-b py-4 flex justify-between items-center">
         <div>
-          <p class="font-semibold" th:text="${e.nombre}"></p>
+          <p class="font-semibold text-gray-800" th:text="${e.nombre}"></p>
           <p class="text-sm text-gray-500" th:text="${e.correo}"></p>
         </div>
 
         <div class="flex gap-2">
           <form th:action="@{'/admin/empresa/aprobar/' + ${e.id}}" method="post">
-            <button class="bg-green-500 text-white px-3 py-1 rounded text-sm">✔</button>
+            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">✔</button>
           </form>
           <form th:action="@{'/admin/empresa/rechazar/' + ${e.id}}" method="post">
-            <button class="bg-red-500 text-white px-3 py-1 rounded text-sm">✖</button>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">✖</button>
           </form>
         </div>
       </div>
     </div>
 
-    <!-- OFERENTES -->
-    <div class="bg-white p-5 rounded shadow">
-      <h2 class="font-semibold mb-4">Oferentes pendientes</h2>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold mb-4 text-gray-800">Oferentes pendientes</h2>
 
       <div th:if="${oferentes.isEmpty()}" class="text-gray-400 text-sm">
         Sin oferentes pendientes
       </div>
 
-      <div th:each="o : ${oferentes}" class="border-b py-3 flex justify-between items-center">
+      <div th:each="o : ${oferentes}" class="border-b py-4 flex justify-between items-center">
         <div>
-          <p class="font-semibold"
+          <p class="font-semibold text-gray-800"
              th:text="${o.nombre + ' ' + o.apellido}"></p>
           <p class="text-sm text-gray-500"
              th:text="${o.correo}"></p>
@@ -81,10 +76,10 @@
 
         <div class="flex gap-2">
           <form th:action="@{'/admin/oferente/aprobar/' + ${o.id}}" method="post">
-            <button class="bg-green-500 text-white px-3 py-1 rounded text-sm">✔</button>
+            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">✔</button>
           </form>
           <form th:action="@{'/admin/oferente/rechazar/' + ${o.id}}" method="post">
-            <button class="bg-red-500 text-white px-3 py-1 rounded text-sm">✖</button>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">✖</button>
           </form>
         </div>
       </div>
@@ -93,6 +88,14 @@
   </div>
 
 </main>
+
+<footer class="bg-gray-900 text-gray-300 text-sm mt-auto">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
+    <span>Bolsa de Empleo</span>
+    <span>Admin Panel</span>
+  </div>
+</footer>
+
 
 </body>
 </html>
